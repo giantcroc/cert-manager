@@ -19,8 +19,7 @@ limitations under the License.
 package fake
 
 import (
-	acmev1 "github.com/cert-manager/cert-manager/pkg/apis/acme/v1"
-	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
+	experimentalv1alpha3 "github.com/cert-manager/cert-manager/pkg/apis/experimental/v1alpha3"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -32,8 +31,7 @@ var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
 
 var localSchemeBuilder = runtime.SchemeBuilder{
-	acmev1.AddToScheme,
-	certmanagerv1.AddToScheme,
+	experimentalv1alpha3.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

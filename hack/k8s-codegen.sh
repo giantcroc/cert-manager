@@ -65,14 +65,16 @@ deepcopy_inputs=(
   pkg/webhook/handlers/testdata/apis/testgroup/v1 \
   pkg/webhook/handlers/testdata/apis/testgroup \
   pkg/acme/webhook/apis/acme/v1alpha1 \
+  pkg/apis/experimental/v1alpha3 \
 )
 
 client_subpackage="pkg/client"
 client_package="${module_name}/${client_subpackage}"
 # Generate clientsets, listers and informers for user-facing API types
 client_inputs=(
-  pkg/apis/certmanager/v1 \
-  pkg/apis/acme/v1 \
+  # pkg/apis/certmanager/v1 \
+  # pkg/apis/acme/v1 \
+  pkg/apis/experimental/v1alpha3 \
 )
 
 # Generate defaulting functions to be used by the mutating webhook

@@ -20,10 +20,8 @@ package fake
 
 import (
 	clientset "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned"
-	acmev1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/acme/v1"
-	fakeacmev1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/acme/v1/fake"
-	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/certmanager/v1"
-	fakecertmanagerv1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/certmanager/v1/fake"
+	experimentalv1alpha3 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/experimental/v1alpha3"
+	fakeexperimentalv1alpha3 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/experimental/v1alpha3/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -81,12 +79,7 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
-// AcmeV1 retrieves the AcmeV1Client
-func (c *Clientset) AcmeV1() acmev1.AcmeV1Interface {
-	return &fakeacmev1.FakeAcmeV1{Fake: &c.Fake}
-}
-
-// CertmanagerV1 retrieves the CertmanagerV1Client
-func (c *Clientset) CertmanagerV1() certmanagerv1.CertmanagerV1Interface {
-	return &fakecertmanagerv1.FakeCertmanagerV1{Fake: &c.Fake}
+// ExperimentalV1alpha3 retrieves the ExperimentalV1alpha3Client
+func (c *Clientset) ExperimentalV1alpha3() experimentalv1alpha3.ExperimentalV1alpha3Interface {
+	return &fakeexperimentalv1alpha3.FakeExperimentalV1alpha3{Fake: &c.Fake}
 }

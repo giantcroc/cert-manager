@@ -22,8 +22,7 @@ import (
 	"fmt"
 	"net/http"
 
-	acmev1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/acme/v1"
-	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/certmanager/v1"
+	experimentalv1alpha3 "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned/typed/experimental/v1alpha3"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -31,26 +30,19 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	AcmeV1() acmev1.AcmeV1Interface
-	CertmanagerV1() certmanagerv1.CertmanagerV1Interface
+	ExperimentalV1alpha3() experimentalv1alpha3.ExperimentalV1alpha3Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	acmeV1        *acmev1.AcmeV1Client
-	certmanagerV1 *certmanagerv1.CertmanagerV1Client
+	experimentalV1alpha3 *experimentalv1alpha3.ExperimentalV1alpha3Client
 }
 
-// AcmeV1 retrieves the AcmeV1Client
-func (c *Clientset) AcmeV1() acmev1.AcmeV1Interface {
-	return c.acmeV1
-}
-
-// CertmanagerV1 retrieves the CertmanagerV1Client
-func (c *Clientset) CertmanagerV1() certmanagerv1.CertmanagerV1Interface {
-	return c.certmanagerV1
+// ExperimentalV1alpha3 retrieves the ExperimentalV1alpha3Client
+func (c *Clientset) ExperimentalV1alpha3() experimentalv1alpha3.ExperimentalV1alpha3Interface {
+	return c.experimentalV1alpha3
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -97,11 +89,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 
 	var cs Clientset
 	var err error
-	cs.acmeV1, err = acmev1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
-	cs.certmanagerV1, err = certmanagerv1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.experimentalV1alpha3, err = experimentalv1alpha3.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +114,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.acmeV1 = acmev1.New(c)
-	cs.certmanagerV1 = certmanagerv1.New(c)
+	cs.experimentalV1alpha3 = experimentalv1alpha3.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

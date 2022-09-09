@@ -21,8 +21,7 @@ package externalversions
 import (
 	"fmt"
 
-	v1 "github.com/cert-manager/cert-manager/pkg/apis/acme/v1"
-	certmanagerv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
+	v1alpha3 "github.com/cert-manager/cert-manager/pkg/apis/experimental/v1alpha3"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -53,21 +52,9 @@ func (f *genericInformer) Lister() cache.GenericLister {
 // TODO extend this to unknown resources with a client pool
 func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource) (GenericInformer, error) {
 	switch resource {
-	// Group=acme.cert-manager.io, Version=v1
-	case v1.SchemeGroupVersion.WithResource("challenges"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Acme().V1().Challenges().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("orders"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Acme().V1().Orders().Informer()}, nil
-
-		// Group=cert-manager.io, Version=v1
-	case certmanagerv1.SchemeGroupVersion.WithResource("certificates"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Certmanager().V1().Certificates().Informer()}, nil
-	case certmanagerv1.SchemeGroupVersion.WithResource("certificaterequests"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Certmanager().V1().CertificateRequests().Informer()}, nil
-	case certmanagerv1.SchemeGroupVersion.WithResource("clusterissuers"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Certmanager().V1().ClusterIssuers().Informer()}, nil
-	case certmanagerv1.SchemeGroupVersion.WithResource("issuers"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Certmanager().V1().Issuers().Informer()}, nil
+	// Group=experimental.cert-manager.io, Version=v1alpha3
+	case v1alpha3.SchemeGroupVersion.WithResource("quoteattestations"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Experimental().V1alpha3().QuoteAttestations().Informer()}, nil
 
 	}
 

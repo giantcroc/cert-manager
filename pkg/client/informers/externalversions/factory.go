@@ -24,8 +24,7 @@ import (
 	time "time"
 
 	versioned "github.com/cert-manager/cert-manager/pkg/client/clientset/versioned"
-	acme "github.com/cert-manager/cert-manager/pkg/client/informers/externalversions/acme"
-	certmanager "github.com/cert-manager/cert-manager/pkg/client/informers/externalversions/certmanager"
+	experimental "github.com/cert-manager/cert-manager/pkg/client/informers/externalversions/experimental"
 	internalinterfaces "github.com/cert-manager/cert-manager/pkg/client/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -173,14 +172,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Acme() acme.Interface
-	Certmanager() certmanager.Interface
+	Experimental() experimental.Interface
 }
 
-func (f *sharedInformerFactory) Acme() acme.Interface {
-	return acme.New(f, f.namespace, f.tweakListOptions)
-}
-
-func (f *sharedInformerFactory) Certmanager() certmanager.Interface {
-	return certmanager.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Experimental() experimental.Interface {
+	return experimental.New(f, f.namespace, f.tweakListOptions)
 }
